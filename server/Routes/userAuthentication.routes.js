@@ -29,16 +29,17 @@ UserAuthRoutes.post("/google", async (req, res) => {
   const email = req.body.email
   try {
     const arr = await ModelUserAuth.find({email});
-
-    const obj = {
-      userId:arr[0].userId,
-      user:true
-    }
-
+   
     if(arr.length >= 1){
+      const obj = {
+        userId:arr[0].userId,
+        user:true
+      }
       res.send(obj)
     }else{
-      obj.user = false
+      const obj = {
+        user:false
+      }
       res.send(obj)
     }
   } catch (error) {
@@ -56,18 +57,18 @@ UserAuthRoutes.get("/:id", async (req, res) => {
   }
 });
 
-UserAuthRoutes.post("/delete", async (req, res) => {
-  const { UserId } = req.body;
-  try {
-    let All_User = await ModelUserAuth.findOneAndRemove({ UserId });
-    res.status(200).send({ msg: "User has been deleted", status: "success" });
-  } catch (err) {
-    console.log(err, "err line 20");
-    res
-      .status(200)
-      .send({ msg: "Something went wrong please try again", status: "error" });
-  }
-});
+// UserAuthRoutes.post("/delete", async (req, res) => {
+//   const { UserId } = req.body;
+//   try {
+//     let All_User = await ModelUserAuth.findOneAndRemove({ UserId });
+//     res.status(200).send({ msg: "User has been deleted", status: "success" });
+//   } catch (err) {
+//     console.log(err, "err line 20");
+//     res
+//       .status(200)
+//       .send({ msg: "Something went wrong please try again", status: "error" });
+//   }
+// });
 
 UserAuthRoutes.post("/register", async (req, res) => {
 
@@ -195,64 +196,64 @@ UserAuthRoutes.post("/login", async (req, res) => {
   }
 });
 
-UserAuthRoutes.post("/changepass", async (req, res) => {
-  const email = req.body.email;
-  try {
-    let User_Details = await ModelUserAuth.find({ email });
+// UserAuthRoutes.post("/changepass", async (req, res) => {
+//   const email = req.body.email;
+//   try {
+//     let User_Details = await ModelUserAuth.find({ email });
 
-    console.log(User_Details, email);
-    if (User_Details.length > 0) {
-      res
-        .status(200)
-        .send({ msg: "User is found", status: "success", userPresent: true });
-    } else {
-      res
-        .status(200)
-        .send({
-          msg: "User doesn't exist",
-          status: "error",
-          userPresent: false,
-        });
-    }
-  } catch (err) {
-    console.log(err.message);
-    res
-      .status(200)
-      .send({ msg: "Something went wrong please try again", status: "error" });
-  }
-});
+//     console.log(User_Details, email);
+//     if (User_Details.length > 0) {
+//       res
+//         .status(200)
+//         .send({ msg: "User is found", status: "success", userPresent: true });
+//     } else {
+//       res
+//         .status(200)
+//         .send({
+//           msg: "User doesn't exist",
+//           status: "error",
+//           userPresent: false,
+//         });
+//     }
+//   } catch (err) {
+//     console.log(err.message);
+//     res
+//       .status(200)
+//       .send({ msg: "Something went wrong please try again", status: "error" });
+//   }
+// });
 
-UserAuthRoutes.patch("/setpass", async (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+// UserAuthRoutes.patch("/setpass", async (req, res) => {
+//   const email = req.body.email;
+//   const password = req.body.password;
 
-  try {
-    const data = await ModelUserAuth.find({ email });
-    if (data.length > 0) {
-      bcrypt.hash(password, 8, async (err, protected_password) => {
-        if (err) {
-          console.log(err);
-        } else {
-          await ModelUserAuth.updateOne(
-            { email },
-            { password: protected_password }
-          );
-          res
-            .status(200)
-            .send({
-              msg: "User password has been changed successfully",
-              status: "success",
-            });
-        }
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res
-      .status(200)
-      .send({ msg: "Something went wrong please try again", status: "error" });
-  }
-});
+//   try {
+//     const data = await ModelUserAuth.find({ email });
+//     if (data.length > 0) {
+//       bcrypt.hash(password, 8, async (err, protected_password) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           await ModelUserAuth.updateOne(
+//             { email },
+//             { password: protected_password }
+//           );
+//           res
+//             .status(200)
+//             .send({
+//               msg: "User password has been changed successfully",
+//               status: "success",
+//             });
+//         }
+//       });
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     res
+//       .status(200)
+//       .send({ msg: "Something went wrong please try again", status: "error" });
+//   }
+// });
 
 
 UserAuthRoutes.get("/:id", async (req, res) => {

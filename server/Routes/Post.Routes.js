@@ -28,11 +28,25 @@ postrouter.post("/google", async (req, res) => {
 
 postrouter.post("/", async (req, res) => {
 
-  console.log("aaaaaaaaaa  post",req.body)
-  const newPost = new Post(req.body);
+  const { body } = req
+
   try {
-    const savedPost = await newPost.save();
-    res.status(200).json(savedPost);
+    const notes = await Post.find({userId: body.userId});
+
+
+    console.log(notes, "list")
+
+    if(notes.length > 0){
+      // let post = await Post.findOneAndUpdate({userId: body.userId}, {$push: {post: body}});
+
+      res.status(200).json({data:"data"});
+    }
+
+
+    let postData = await Post({userId: body.userId, post: [body]});
+    postData.save()
+
+    res.status(200).json({data:"data"});
   } catch (err) {
     res.status(500).json(err);
   }
